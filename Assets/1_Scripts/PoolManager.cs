@@ -1,0 +1,72 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PoolManager : MonoBehaviour
+{
+    public static PoolManager instance;
+
+    [SerializeField]
+    private GameObject[] ObjectPoolingPrefabs;
+    private Dictionary<string,GameObject> poolingObjectPrefabs = new Dictionary<string, GameObject>();
+
+    private Dictionary<string,Queue<GameObject>> poolingObjectQueues = new Dictionary<string, Queue<GameObject>>();
+
+    private void InitializeObject(int initCount)
+    {
+        for (int i = 0; i < ObjectPoolingPrefabs.Length; i++)
+        {
+            poolingObjectPrefabs.Add(ObjectPoolingPrefabs[i].name, ObjectPoolingPrefabs[i]);
+            poolingObjectQueues.Add(ObjectPoolingPrefabs[i].name, new Queue<GameObject>());
+            for (int j = 0; j < initCount; j++)
+            {
+                poolingObjectQueues[ObjectPoolingPrefabs[i].name].Enqueue(CreateNewObject(ObjectPoolingPrefabs[i].name));
+            }
+        }
+    }
+    private GameObject CreateNewObject(string objectName)
+    {
+        var newObj = Instantiate(poolingObjectPrefabs[objectName], transform, true);
+        newObj.SetActive(false);
+        return newObj;
+    }
+    public GameObject GetObject(string objectName)
+    {
+        if (instance.poolingObjectQueues[objectName].Count > 0)
+        {
+            var obj = instance.poolingObjectQueues[objectName].Dequeue();
+            obj.transform.SetParent(null);
+            obj.SetActive(true);
+            return obj;
+        }
+        else
+        {
+            var newObj = CreateNewObject(objectName);
+            newObj.transform.SetParent(null);
+            newObj.gameObject.SetActive(true);
+            return newObj;
+        }
+    }
+    public void returnObject(string objectName, GameObject obj)
+    {
+        obj.gameObject.SetActive(false);
+        obj.transform.SetParent(instance.transform);
+        instance.poolingObjectQueues[objectName].Enqueue(obj);
+    }
+    public void returnAll()
+    {
+
+    }
+    private void Awake()
+    {
+        if (!instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            InitializeObject(3);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+}
