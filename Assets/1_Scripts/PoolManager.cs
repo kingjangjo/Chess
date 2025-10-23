@@ -11,6 +11,8 @@ public class PoolManager : MonoBehaviour
 
     private Dictionary<string,Queue<GameObject>> poolingObjectQueues = new Dictionary<string, Queue<GameObject>>();
 
+    private List<GameObject> activeObjects = new List<GameObject>();
+
     private void InitializeObject(int initCount)
     {
         for (int i = 0; i < ObjectPoolingPrefabs.Length; i++)
@@ -36,6 +38,7 @@ public class PoolManager : MonoBehaviour
             var obj = instance.poolingObjectQueues[objectName].Dequeue();
             obj.transform.SetParent(null);
             obj.SetActive(true);
+            activeObjects.Add(obj);
             return obj;
         }
         else
@@ -43,6 +46,7 @@ public class PoolManager : MonoBehaviour
             var newObj = CreateNewObject(objectName);
             newObj.transform.SetParent(null);
             newObj.gameObject.SetActive(true);
+            activeObjects.Add(newObj);
             return newObj;
         }
     }
@@ -51,10 +55,15 @@ public class PoolManager : MonoBehaviour
         obj.gameObject.SetActive(false);
         obj.transform.SetParent(instance.transform);
         instance.poolingObjectQueues[objectName].Enqueue(obj);
+        activeObjects.Remove(obj);
     }
     public void returnAll()
     {
-
+        for (int i = activeObjects.Count - 1; i >= 0; i--)
+        {
+            returnObject(activeObjects[i].name.Replace("(Clone)", "").Trim(), activeObjects[i]);
+        }
+        activeObjects.Clear();
     }
     private void Awake()
     {
@@ -67,6 +76,14 @@ public class PoolManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("space");
+            instance.returnAll();
         }
     }
 }

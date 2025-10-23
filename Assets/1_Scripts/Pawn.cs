@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Pawn : MonoBehaviour
+public class Pawn : MonoBehaviour,IPiece
 {
     public GameObject pawn;
     public GameObject Move;
@@ -30,7 +30,7 @@ public class Pawn : MonoBehaviour
         set
         {
             curRank = value;
-            pawn.transform.position = new Vector3(curFile,0,curRank);
+            Debug.Log($"{(File)curFile}{curRank}");
         }
     }
     private void OnMouseDown()
@@ -44,8 +44,10 @@ public class Pawn : MonoBehaviour
                     Vector3 expectationMovement = new Vector3(gameObject.transform.position.x, -0.75f, gameObject.transform.position.z - (i * 1.5f));
                     //var movePosition = Instantiate(Move, expectationMovement, Quaternion.identity);
                     var movePosition = PoolManager.instance.GetObject("Move");
-                    movePosition.transform.position = expectationMovement;
+                    movePosition.transform.position = expectationMovement;  
                     movePosition.transform.SetParent(gameObject.transform);
+                    movePosition.GetComponent<Move>().curFile = this.curFile;
+                    movePosition.GetComponent<Move>().curRank = this.curRank+i;
                 }
                 else
                 {
