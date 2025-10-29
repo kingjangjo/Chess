@@ -6,7 +6,7 @@ public class Move : MonoBehaviour
 
     public int curFile = 0;
     public int curRank = 0;
-    private void Start()
+    public void rePos()
     {
         piecePosition = transform.parent;
     }
