@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Move : MonoBehaviour
 {
@@ -6,7 +6,7 @@ public class Move : MonoBehaviour
 
     public int curFile = 0;
     public int curRank = 0;
-    public void rePos()
+    public void RePos()
     {
         piecePosition = transform.parent;
     }

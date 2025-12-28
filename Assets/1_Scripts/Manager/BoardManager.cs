@@ -1,27 +1,27 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 
 public class BoardManager : MonoBehaviour
 {
     public static BoardManager Instance;
-    
+
     private bool isChecked;
     Condition[,] board = new Condition[10, 10];
     private void Awake()
     {
-        //½Ì±ÛÅæÈ­
-        if (!Instance)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        //ì‹±ê¸€í†¤í™”
+            if (!Instance)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
 
-        //º¸µå¼¼ÆÃ
+        //ë³´ë“œì„¸íŒ…
         for (int i = 0; i <= 9; i++)
         {
             for (int j = 0; j <= 9; j++)

@@ -570,6 +570,51 @@ Transform:
   - {fileID: 345234398}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &278042943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 278042944}
+  - component: {fileID: 278042945}
+  m_Layer: 0
+  m_Name: TurnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &278042944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278042943}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.8482482, y: -50.544464, z: -39.33444}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &278042945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278042943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a058166a511133d428a6733320159da6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSelectPiece: 0
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +1014,7 @@ PrefabInstance:
       addedObject: {fileID: 365740428}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 365740432}
+      addedObject: {fileID: 365740429}
   m_SourcePrefab: {fileID: 100100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
 --- !u!4 &365740426 stripped
 Transform:
@@ -1008,7 +1053,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &365740432
+--- !u!114 &365740429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1017,12 +1062,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 365740427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 365740427}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 3
   curRank: 2
   beforeFile: 0
@@ -1319,7 +1364,7 @@ PrefabInstance:
       addedObject: {fileID: 527526227}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 527526231}
+      addedObject: {fileID: 527526228}
   m_SourcePrefab: {fileID: 100100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
 --- !u!4 &527526225 stripped
 Transform:
@@ -1358,7 +1403,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &527526231
+--- !u!114 &527526228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1367,12 +1412,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 527526226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 527526226}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 527526226}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 1
   curRank: 2
   beforeFile: 0
@@ -2013,7 +2058,7 @@ PrefabInstance:
       addedObject: {fileID: 1049327085}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1049327089}
+      addedObject: {fileID: 1049327086}
   m_SourcePrefab: {fileID: 100100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
 --- !u!4 &1049327083 stripped
 Transform:
@@ -2052,7 +2097,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1049327089
+--- !u!114 &1049327086
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2061,12 +2106,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1049327084}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 1049327084}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 6
   curRank: 2
   beforeFile: 0
@@ -2638,7 +2683,7 @@ PrefabInstance:
       addedObject: {fileID: 1489936522}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1489936526}
+      addedObject: {fileID: 1489936523}
   m_SourcePrefab: {fileID: 100100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
 --- !u!4 &1489936520 stripped
 Transform:
@@ -2677,7 +2722,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1489936526
+--- !u!114 &1489936523
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2686,12 +2731,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1489936521}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 1489936521}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 4
   curRank: 2
   beforeFile: 0
@@ -2762,7 +2807,7 @@ PrefabInstance:
       addedObject: {fileID: 1491248549}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1491248553}
+      addedObject: {fileID: 1491248550}
   m_SourcePrefab: {fileID: 100100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
 --- !u!4 &1491248547 stripped
 Transform:
@@ -2801,7 +2846,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1491248553
+--- !u!114 &1491248550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2810,12 +2855,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1491248548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 1491248548}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 7
   curRank: 2
   beforeFile: 0
@@ -2947,7 +2992,7 @@ PrefabInstance:
       addedObject: {fileID: 1705622937}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1705622941}
+      addedObject: {fileID: 1705622938}
   m_SourcePrefab: {fileID: 100100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
 --- !u!4 &1705622935 stripped
 Transform:
@@ -2986,7 +3031,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1705622941
+--- !u!114 &1705622938
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2995,12 +3040,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1705622936}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 1705622936}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 8
   curRank: 2
   beforeFile: 0
@@ -3277,7 +3322,7 @@ PrefabInstance:
       addedObject: {fileID: 1888338690}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1888338694}
+      addedObject: {fileID: 1888338691}
   m_SourcePrefab: {fileID: 100100000, guid: 8fbcce33444d4ce4db5b61f8d0eeb7aa, type: 3}
 --- !u!4 &1888338688 stripped
 Transform:
@@ -3316,7 +3361,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1888338694
+--- !u!114 &1888338691
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3325,12 +3370,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1888338689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 1888338689}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 2
   curRank: 2
   beforeFile: 0
@@ -3449,12 +3494,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1889793546}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 1889793546}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
+  take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
   curFile: 5
   curRank: 2
   beforeFile: 0
@@ -4098,12 +4143,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2064073702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5812ab29bbfbc5f4bac0a2e921e7a348, type: 3}
+  m_Script: {fileID: 11500000, guid: 06502cfa2e8ae4c46bd008a26e089fab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 2064073702}
-  Move: {fileID: 1878035978562342784, guid: cdf2c605f6d922148b87de332cd79e80, type: 3}
-  Take: {fileID: 6646245101734973296, guid: 5de6e57867a806a4b89d90ffd018d9b8, type: 3}
+  piece: {fileID: 0}
+  move: {fileID: 0}
+  take: {fileID: 0}
   curFile: 5
   curRank: 7
   beforeFile: 0
@@ -4332,3 +4377,4 @@ SceneRoots:
   - {fileID: 212597145}
   - {fileID: 1352030538}
   - {fileID: 66851264}
+  - {fileID: 278042944}

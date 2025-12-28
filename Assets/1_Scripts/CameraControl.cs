@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
@@ -22,6 +22,7 @@ public class CameraControl : MonoBehaviour
         {
             float x = Input.GetAxis("Mouse X");
             float y = Input.GetAxis("Mouse Y");
+            y = Mathf.Clamp(y, -90f, 90f);
             Vector3 rotateValue = new Vector3(-y, x, 0);
             transform.eulerAngles = transform.eulerAngles - rotateValue;
             transform.eulerAngles += rotateValue * rotateSpeed;
