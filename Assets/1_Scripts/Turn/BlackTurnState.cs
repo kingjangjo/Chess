@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BlackTurnState : MonoBehaviour
+public class BlackTurnState : IState
 {
     public void Enter()
     {

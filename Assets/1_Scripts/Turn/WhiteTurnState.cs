@@ -11,5 +11,5 @@ public class WhiteTurnState : IState
     {
 
     }
-    public void Exit() { Debug.Log("WhiteTurnStart!"); }
+    public void Exit() { Debug.Log("WhiteTurnEnd!"); }
 }

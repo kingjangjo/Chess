@@ -4,7 +4,7 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance { get; private set; }
     public bool isSelectPiece = false;
-    IState currentState;
+    public IState currentState;
     private void Start()
     {
         if (instance == null)
@@ -12,13 +12,13 @@ public class TurnManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        ChangeScene(new WhiteTurnState());
+        ChangeState(new WhiteTurnState());
     }
     private void Update()
     {
         currentState?.Update();
     }
-    public void ChangeScene(IState nextState)
+    public void ChangeState(IState nextState)
     {
         currentState?.Exit();
         currentState = nextState;

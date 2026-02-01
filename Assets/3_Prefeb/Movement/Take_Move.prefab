@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5502905641870004862}
   - component: {fileID: 6550304611787071196}
   - component: {fileID: 9104293362517094681}
+  - component: {fileID: -5936401422472870589}
   m_Layer: 0
   m_Name: Take_Move
   m_TagString: Untagged
@@ -108,9 +109,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5000001
-  m_Height: 2
+  m_Height: 3.3221667
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0.000000045849728, y: 0.017616391, z: -0.000000091699455}
 --- !u!54 &9104293362517094681
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -138,3 +139,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-5936401422472870589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553104615934992304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00fad8e32f95ddf4a98258f1677186cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curFile: 0
+  curRank: 0
