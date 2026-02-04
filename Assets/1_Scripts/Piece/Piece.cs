@@ -9,7 +9,9 @@ public class Piece : MonoBehaviour,IPiece//대충 피스 베이스
     private GameObject piece;
     public int curFile = (int)File.E;
     public int curRank = 2;
+    [SerializeField]
     private int beforeFile = 0;
+    [SerializeField]
     private int beforeRank = 0;
 
     internal bool on = false;
@@ -75,7 +77,8 @@ public class Piece : MonoBehaviour,IPiece//대충 피스 베이스
             if (TurnManager.instance.currentState.ToString() == "BlackTurnState" && white)
                 return;
             TurnManager.instance.isSelectPiece = true;
-            DrawMoveMent();
+            //DrawMoveMent();
+            DrawLegalMove();
         }
         else
         {
@@ -88,34 +91,73 @@ public class Piece : MonoBehaviour,IPiece//대충 피스 베이스
     {
 
     }
+    private void DrawLegalMove()
+    {
+        foreach (var move in GetLagalMoves())
+        {
+            Vector3 expectationMovement = new Vector3(6.75f - (move.x * 1.5f), -0.75f, 6.75f - (move.y * 1.5f));
+            var movePosition = PoolManager.instance.GetObject("Move");
+            movePosition.transform.position = expectationMovement;
+            movePosition.transform.SetParent(gameObject.transform);
+            movePosition.GetComponent<Move>().curFile = move.x;
+            movePosition.GetComponent<Move>().curRank = move.y;
+            movePosition.GetComponent<Move>().RePos();
+        }
+    }
     public virtual void CalculationRawMove()
     {
 
     }
     protected bool CanCreateTakeMove(int x, int y)
     {
-        Debug.Log($"{x} {y}");
         if (x <= 0 || x >= 9 || y <= 0 || y >= 9)
         {
-            Debug.Log("Out of bounds");
             return false;
 
         }
         if (BoardManager.Instance.IsBlocked(x, y) == Condition.Empty)
         {
-            Debug.Log("Empty");
             return true;
-
         }
-        if (BoardManager.Instance.IsBlocked(x, y) == Condition.Piece && Object.FindObjectsByType<Piece>(FindObjectsSortMode.None).FirstOrDefault(t => t.curFile == x && t.curRank == y).color != color)
+        if (BoardManager.Instance.IsBlocked(x, y) == Condition.Out)
         {
-            Debug.Log("Can take");
-            return true;
+            return false;
+        }
+        if (BoardManager.Instance.IsBlocked(x, y) == Condition.Piece)
+        {
+            foreach(Piece piece in BoardManager.Instance.pieceBoard)
+            {
+                if(piece != null)
+                {
+                    if (piece.color != color)
+                    {
+                        if (piece.curFile == x && piece.curRank == y)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
         }
         else
         {
-            Debug.Log("Cannot move or take");
             return false;
         }
+    }
+    List<Vector2Int> GetLagalMoves()
+    {
+        var legal = new List<Vector2Int>();
+        CalculationRawMove();
+        foreach (var move in raws)
+        {
+            BoardManager.Instance.MovePos(this, move);
+            if(!BoardManager.Instance.IsKingInCheck(white))
+                legal.Add(move);
+
+            BoardManager.Instance.MovePos(this, new Vector2Int(curFile, curRank));
+        }
+
+        return legal;
     }
 }

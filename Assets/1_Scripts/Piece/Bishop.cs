@@ -179,6 +179,5 @@ public class Bishop : Piece
             else 
                 break;
         }
-        Debug.Log("Bishop Raw Move Calculated");
     }
 }

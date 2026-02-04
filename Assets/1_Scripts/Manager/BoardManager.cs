@@ -9,7 +9,7 @@ public class BoardManager : MonoBehaviour
 
     private bool isChecked;
     Condition[,] conditionBoard = new Condition[10, 10];
-    Piece[,] pieceBoard = new Piece[10, 10];
+    public Piece[,] pieceBoard = new Piece[10, 10];
     private void Awake()
     {
         //싱글톤화
