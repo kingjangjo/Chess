@@ -1,5 +1,8 @@
-﻿using System;
+﻿#nullable enable
+using System;
+using System.Collections;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -10,6 +13,12 @@ public class BoardManager : MonoBehaviour
     private bool isChecked;
     Condition[,] conditionBoard = new Condition[10, 10];
     public Piece[,] pieceBoard = new Piece[10, 10];
+    Condition protectCondition;
+    Piece protectPiece;
+    Vector2Int protectPosition;
+    Condition beforeCondition;
+    Piece beforePiece;
+    Vector2Int beforePosition;
     private void Awake()
     {
         //싱글톤화
@@ -60,7 +69,12 @@ public class BoardManager : MonoBehaviour
             for (int j = 0; j <= 9; j++)
             {
                 if (j == 1 || j == 2 || j == 7 || j == 8)
-                    pieceBoard[i, j] = UnityEngine.Object.FindObjectsByType<Piece>(FindObjectsSortMode.None).FirstOrDefault(t => t.curFile == i && t.curRank == j);
+                {
+                    if(i != 0 && i != 9)
+                    {
+                        pieceBoard[i, j] = UnityEngine.Object.FindObjectsByType<Piece>(FindObjectsSortMode.None).FirstOrDefault(t => t.curFile == i && t.curRank == j);
+                    }
+                }
                 else
                     pieceBoard[i, j] = null;
             }
@@ -68,9 +82,12 @@ public class BoardManager : MonoBehaviour
     }
     public Condition IsBlocked(int x, int y)
     {
-        if (conditionBoard[x, y] == Condition.Empty) return Condition.Empty;
-        else if (conditionBoard[x, y] == Condition.Piece) return Condition.Piece;
-        else return Condition.Out;
+        if (conditionBoard[x, y] == Condition.Empty) 
+            return Condition.Empty;
+        else if (conditionBoard[x, y] == Condition.Piece) 
+            return Condition.Piece;
+        else 
+            return Condition.Out;
     }
     public (Condition condition, Piece? piece) IsBlocked(Vector2Int pos)
     {
@@ -81,29 +98,30 @@ public class BoardManager : MonoBehaviour
         else
             return (Condition.Piece, pieceBoard[pos.x, pos.y]);
     }
-    public void MovePos(int curFile, int curRank, int nextFile, int nextRank)
-    {
-        if (conditionBoard[curFile,curRank] == Condition.Piece)
-        {
-            conditionBoard[curFile,curRank] = Condition.Empty;
-            conditionBoard[nextFile,nextRank] = Condition.Piece;
-        }
-        else
-        {
-            Debug.LogWarning("What..?!?!?!");
-        }
-    }
     public void MovePos(Piece piece, Vector2Int to)
     {
         var from = piece.pos;
-
-        pieceBoard[from.x, from.y] = null;
+        protectPosition = to;
+        beforePosition = from;
+        
+        protectPiece = pieceBoard[to.x, to.y];
+        beforePiece = pieceBoard[from.x, from.y];
         pieceBoard[to.x, to.y] = piece;
+        pieceBoard[from.x, from.y] = null;
 
-        conditionBoard[from.x, from.y] = Condition.Empty;
+        protectCondition = conditionBoard[to.x, to.y];
+        beforeCondition = conditionBoard[from.x, from.y];
         conditionBoard[to.x, to.y] = Condition.Piece;
-
+        conditionBoard[from.x, from.y] = Condition.Empty;
         piece.pos = to;
+    }
+    public void UndoMovePos(Piece piece)
+    {
+        piece.pos = beforePosition;
+        pieceBoard[beforePosition.x, beforePosition.y] = beforePiece;
+        conditionBoard[beforePosition.x, beforePosition.y] = beforeCondition;
+        pieceBoard[protectPosition.x, protectPosition.y] = protectPiece;
+        conditionBoard[protectPosition.x, protectPosition.y] = protectCondition;
     }
     private Vector2Int GetKingPos(bool white)
     {
@@ -140,21 +158,45 @@ public class BoardManager : MonoBehaviour
             if (piece != null && piece.white != white)
             {
                 piece.GetComponent<Piece>().CalculationRawMove();
-                var moves = piece.raws;
-                if (moves.Contains(kingPos))
+                var moves = piece.rawss;
+                foreach (DictionaryEntry move in moves)
                 {
-                    return true;
+                    if ((Vector2Int)move.Key == kingPos && (string)move.Value != "Move" && (string)move.Value != "Promotion")
+                        return true;
                 }
             }
         }
         return false;
     }
-    private void Update()
+    public void CatchPiece(GameObject piece)
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        Vector2Int position = piece.GetComponent<Piece>().Pos;
+        pieceBoard[position.x, position.y] = null;
+        conditionBoard[position.x, position.y] = Condition.Empty;
+        Destroy(piece);
+    }
+    public string IsCheckmate(bool white)
+    {
+        foreach(var piece in pieceBoard)
         {
-            Debug.Log($"Is White King in Check? {IsKingInCheck(true)}");
-            Debug.Log($"Is Black King in Check? {IsKingInCheck(false)}");
+            if (piece != null && piece.white == white)
+            {
+                piece.GetComponent<Piece>().CalculationRawMove();
+                foreach (DictionaryEntry move in piece.rawss)
+                {
+                    MovePos(piece, (Vector2Int)move.Key);
+                    if (!IsKingInCheck(white))
+                    {
+                        UndoMovePos(piece);
+                        return "NotCheckmate";
+                    }
+                    UndoMovePos(piece);
+                }
+            }
         }
+        if (IsKingInCheck(white))
+            return "Checkmate";
+        else
+            return "Stalemate";
     }
 }

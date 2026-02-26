@@ -120,17 +120,19 @@ public class Bishop : Piece
     }
     public override void CalculationRawMove()
     {
-        raws.Clear();
+        rawss.Clear();
+        //raws.Clear();
         for (int i = 1; ; i++)
         {
             var (condition, piece) = BoardManager.Instance.IsBlocked(new Vector2Int(X + i * color, Y + i * color));
 
             if (condition == Condition.Empty)
-                raws.Add(new Vector2Int(X + i * color, Y + i * color));
+                rawss.Add(new Vector2Int(X + i * color, Y + i * color), "Take_Move");
+            //raws.Add(new Vector2Int(X + i * color, Y + i * color));
             else if (condition == Condition.Piece && piece.color != color)
             {
-                raws.Add(new Vector2Int(X + i * color, Y + i * color));
-                Debug.Log("Enemy Piece Detected");
+                rawss.Add(new Vector2Int(X + i * color, Y + i * color), "Take_Move");
+                //raws.Add(new Vector2Int(X + i * color, Y + i * color));
                 break;
             }
             else
@@ -142,10 +144,12 @@ public class Bishop : Piece
             var (condition, piece) = BoardManager.Instance.IsBlocked(new Vector2Int(X - i * color, Y + i * color));
 
             if (condition == Condition.Empty)
-                raws.Add(new Vector2Int(X - i * color, Y + i * color));
+                rawss.Add(new Vector2Int(X - i * color, Y + i * color),"Take_Move");
+            //raws.Add(new Vector2Int(X - i * color, Y + i * color));
             else if (condition == Condition.Piece && piece.color != color)
             {
-                raws.Add(new Vector2Int(X - i * color, Y + i * color));
+                //raws.Add(new Vector2Int(X - i * color, Y + i * color));
+                rawss.Add(new Vector2Int(X - i * color, Y + i * color), "Take_Move");
                 break;
             }
             else
@@ -156,10 +160,12 @@ public class Bishop : Piece
             var (condition, piece) = BoardManager.Instance.IsBlocked(new Vector2Int(X + i * color, Y + i * color));
 
             if (condition == Condition.Empty)
-                raws.Add(new Vector2Int(X + i * color, Y + i * color));
+                rawss.Add(new Vector2Int(X + i * color, Y + i * color),"Take_Move");
+                //raws.Add(new Vector2Int(X + i * color, Y + i * color));
             else if (condition == Condition.Piece && piece.color != color)
             {
-                raws.Add(new Vector2Int(X + i * color, Y + i * color));
+                rawss.Add(new Vector2Int(X + i * color, Y + i * color), "Take_Move");
+                //raws.Add(new Vector2Int(X + i * color, Y + i * color));
                 break;
             }
             else 
@@ -170,10 +176,12 @@ public class Bishop : Piece
             var (condition, piece) = BoardManager.Instance.IsBlocked(new Vector2Int(X - i * color, Y + i * color));
 
             if (condition == Condition.Empty)
-                raws.Add(new Vector2Int(X - i * color, Y + i * color));
+                rawss.Add(new Vector2Int(X - i * color, Y + i * color), "Take_Move");
+                //raws.Add(new Vector2Int(X - i * color, Y + i * color));
             else if (condition == Condition.Piece && piece.color != color)
             {
-                raws.Add(new Vector2Int(X - i * color, Y + i * color));
+                //raws.Add(new Vector2Int(X - i * color, Y + i * color));
+                rawss.Add(new Vector2Int(X - i * color, Y + i * color), "Take_Move");
                 break;
             }
             else 

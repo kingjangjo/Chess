@@ -78,7 +78,6 @@ public class Knight : Piece
         }
         if (CanCreateTakeMove(X + 1, Y + 2))
         {
-            Debug.Log("Knight Move Created");
             Vector3 expectationMovement = new Vector3(gameObject.transform.position.x - (1 * 1.5f), -0.75f, gameObject.transform.position.z - (2 * 1.5f));
             var movePosition = PoolManager.instance.GetObject("Take_Move");
             movePosition.transform.position = expectationMovement;
@@ -90,38 +89,47 @@ public class Knight : Piece
     }
     public override void CalculationRawMove()
     {
-        raws.Clear();
+        rawss.Clear();
+        //raws.Clear();
         if (CanCreateTakeMove(X + 2, Y + 1))
         {
-            raws.Add(new Vector2Int(X + 2, Y + 1));
+            //raws.Add(new Vector2Int(X + 2, Y + 1));
+            rawss.Add(new Vector2Int(X + 2, Y + 1), "Take_Move");
         }
         if (CanCreateTakeMove(X + 2, Y - 1))
         {
-            raws.Add(new Vector2Int(X + 2, Y - 1));
+            //raws.Add(new Vector2Int(X + 2, Y - 1));
+            rawss.Add(new Vector2Int(X + 2, Y - 1), "Take_Move");
         }
         if (CanCreateTakeMove(X + 1, Y - 2))
         {
-            raws.Add(new Vector2Int(X + 1, Y - 2));
+            rawss.Add(new Vector2Int(X + 1, Y - 2),"Take_Move");
+            //raws.Add(new Vector2Int(X + 1, Y - 2));
         }
         if (CanCreateTakeMove(X - 1, Y - 2))
         {
-            raws.Add(new Vector2Int(X - 1, Y - 2));
+            rawss.Add(new Vector2Int(X - 1, Y - 2), "Take_Move");
+            //raws.Add(new Vector2Int(X - 1, Y - 2));
         }
         if (CanCreateTakeMove(X - 2, Y - 1))
         {
-            raws.Add(new Vector2Int(X - 2, Y - 1));
+            rawss.Add(new Vector2Int(X - 2, Y - 1), "Take_Move");
+            //raws.Add(new Vector2Int(X - 2, Y - 1));
         }
         if (CanCreateTakeMove(X - 2, Y + 1))
         {
-            raws.Add(new Vector2Int(X - 2, Y + 1));
+            rawss.Add(new Vector2Int(X - 2, Y + 1), "Take_Move");
+            //raws.Add(new Vector2Int(X - 2, Y + 1));
         }
         if (CanCreateTakeMove(X - 1, Y + 2))
         {
-            raws.Add(new Vector2Int(X - 1, Y + 2));
+            rawss.Add(new Vector2Int(X - 1, Y + 2), "Take_Move");
+            //raws.Add(new Vector2Int(X - 1, Y + 2));
         }
         if (CanCreateTakeMove(X + 1, Y + 2))
         {
-            raws.Add(new Vector2Int(X + 1, Y + 2));
+            rawss.Add(new Vector2Int(X + 1, Y + 2), "Take_Move");
+            //raws.Add(new Vector2Int(X + 1, Y + 2));
         }
     }
 }
