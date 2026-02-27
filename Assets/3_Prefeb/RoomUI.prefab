@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 2329823157529239640}
   - component: {fileID: 4002984607974629917}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: RoomIdText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 2136131804256497738}
   - component: {fileID: 8461811057624270264}
   - component: {fileID: 2092619596935067110}
+  - component: {fileID: 7493384959146341464}
   m_Layer: 5
   m_Name: RoomUI
   m_TagString: Untagged
@@ -334,7 +335,35 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8461811057624270264}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7493384959146341464}
+        m_TargetAssemblyTypeName: RoomUi, Assembly-CSharp
+        m_MethodName: PushEnterRoomButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7493384959146341464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4656922918938988238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d76304a8b29cf4aa48ef80322fc251, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomNameText: {fileID: 8759314319545164540}
+  roomIdText: {fileID: 4002984607974629917}
+  roomPlayerCountText: {fileID: 8333253939888111109}
+  roomIndex: 0
 --- !u!1 &5067091943527302585
 GameObject:
   m_ObjectHideFlags: 0

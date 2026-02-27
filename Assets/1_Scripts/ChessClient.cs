@@ -5,13 +5,35 @@ using System.Threading.Tasks;
 using System.Text;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
+public class roomInfo
+{
+    public string roomName { get; set; }
+    public int playerCount { get; set; }
+    public string roomId { get; set; }
+}
 public class ChessClient : MonoBehaviour
 {
-    TcpClient client;
+    public static ChessClient Instance { get; private set; }
+    public TcpClient client { get; private set; }
     NetworkStream stream;
     public TextMeshProUGUI onOfflineText;
     public Image onOfflineIcon;
+    public TMP_InputField roomNameInput;
+    public TMP_InputField playerNameInput;
+    public GameObject roomPrefab;
+    public GameObject roomListObj;
+    public List<roomInfo> roomList = new List<roomInfo>();
+    StringBuilder sb = new StringBuilder();
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
+    }
     async void Start()
     {
         client = new TcpClient();
@@ -41,6 +63,9 @@ public class ChessClient : MonoBehaviour
 
     public async void Send(string msg)
     {
+        if (stream == null) Debug.LogError("Stream is null");
+        Debug.Log("[CLIENT SEND] " + msg);
+        msg += "\n";
         if (client == null || !client.Connected)
             return;
         byte[] data = Encoding.UTF8.GetBytes(msg);
@@ -53,10 +78,90 @@ public class ChessClient : MonoBehaviour
         while (client.Connected)
         {
             int bytes = await stream.ReadAsync(buffer, 0, buffer.Length);
-            if (bytes > 0)
+            if (bytes <= 0)
                 break;
-            string msg = Encoding.UTF8.GetString(buffer);
-            Debug.Log("Server: " + msg);
+            string chunk = Encoding.UTF8.GetString(buffer, 0, bytes);
+            sb.Append(chunk);
+            while (true)
+            {
+                string current = sb.ToString();
+                int index = current.IndexOf('\n');
+                if (index == -1) break;
+
+                string packet = current.Substring(0, index);
+                sb.Remove(0, index + 1);
+                HandlePacket(packet);
+            }
         } 
+    }
+    void HandlePacket(string msg)
+    {
+        Debug.Log("Server: " + msg);
+        var packet = msg.Split('|');
+        switch (packet[0])
+        {
+            case "NEW_ROOM":
+                {
+                    roomList.Add(new roomInfo
+                    {
+                        roomId = packet[1],
+                        roomName = packet[2],
+                        playerCount = 0
+                    });
+                    var roomObj = Instantiate(roomPrefab, roomListObj.transform);
+                    roomObj.GetComponent<RoomUi>().roomIndex = FindRoomIndex(packet[1]);
+                    break;
+                }
+            case "PLAYER_ENTERED":
+                {
+                    foreach (var room in roomList)
+                    {
+                        if (room.roomId == packet[1])
+                        {
+                            room.playerCount++;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            case "ERROR":
+                {
+                    Debug.LogError("Server Error: " + packet[1]);
+                    break;
+                }
+            case "LOG":
+                {
+                    Debug.Log("Server Log: " + packet[1]);
+                    break;
+                }
+            default:
+                {
+                    Debug.LogError("Error: " + packet[1]);
+                    break;
+                }
+        }
+    }
+    public int FindRoomIndex(string roomId)
+    {
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            if (roomList[i].roomId == roomId)
+                return i;
+        }
+        return -1;
+    }
+    public async void CreateRoom(string roomName)
+    {
+        Debug.Log("Creating Room: " + roomName);
+        Send($"CREATE_ROOM|{roomName}");
+    }
+    public async void EnterRoom(string roomName, string playerName)
+    {
+        Send($"ENTER_ROOM|{roomName}|{playerName}");
+    }
+    public void PushCreateRoomButton()
+    {
+        Debug.Log("Create Room Button Clicked");
+        CreateRoom(roomNameInput.text);
     }
 }
