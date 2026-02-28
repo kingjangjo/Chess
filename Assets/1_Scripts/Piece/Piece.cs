@@ -66,6 +66,7 @@ public class Piece : MonoBehaviour,IPiece//대충 피스 베이스
             //BoardManager.Instance.MovePos(beforeFile, beforeRank, X, Y);
             BoardManager.Instance.MovePos(this, new Vector2Int(X,Y));
             isFirst = false;
+            ChessClient.Instance.MoveSend(new Vector2Int(beforeFile, beforeRank), new Vector2Int(curFile, curRank));
         }
     }
     internal bool IsNotMoved()

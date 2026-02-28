@@ -98,6 +98,15 @@ public class BoardManager : MonoBehaviour
         else
             return (Condition.Piece, pieceBoard[pos.x, pos.y]);
     }
+    public void OponentMovePos(Vector2Int from, Vector2Int to)
+    {
+        var piece = pieceBoard[from.x, from.y];
+        pieceBoard[to.x, to.y] = piece;
+        pieceBoard[from.x, from.y] = null;
+        conditionBoard[to.x, to.y] = Condition.Piece;
+        conditionBoard[from.x, from.y] = Condition.Empty;
+        piece.pos = to;
+    }
     public void MovePos(Piece piece, Vector2Int to)
     {
         var from = piece.pos;

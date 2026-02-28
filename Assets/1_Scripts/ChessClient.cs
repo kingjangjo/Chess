@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class roomInfo
 {
@@ -29,7 +30,10 @@ public class ChessClient : MonoBehaviour
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+            DontDestroyOnLoad(this);
+        }
         else
             Destroy(gameObject);
 
@@ -110,6 +114,7 @@ public class ChessClient : MonoBehaviour
                     });
                     var roomObj = Instantiate(roomPrefab, roomListObj.transform);
                     roomObj.GetComponent<RoomUi>().roomIndex = FindRoomIndex(packet[1]);
+                    EnterRoom(packet[2], playerNameInput.text);
                     break;
                 }
             case "PLAYER_ENTERED":
@@ -124,6 +129,33 @@ public class ChessClient : MonoBehaviour
                     }
                     break;
                 }
+            case "PIECE_MOVE":
+                {
+                    Vector2Int from = StringToVector2Int(packet[1]);
+                    Vector2Int to = StringToVector2Int(packet[2]);
+                    switch (BoardManager.Instance.IsBlocked(to.x, to.y))
+                    {
+                        case Condition.Piece:
+                            {
+                                BoardManager.Instance.CatchPiece(BoardManager.Instance.pieceBoard[to.x, to.y].gameObject);
+                                break;
+                            }
+                        case Condition.Empty:
+                            {
+                                break;
+                            }
+                        case Condition.Out:
+                            break;
+                        default:
+                            break;
+                    }
+                    Piece piece = BoardManager.Instance.pieceBoard[from.x, from.y];
+                    BoardManager.Instance.OponentMovePos(from, to);
+                    piece.transform.position = new Vector3(6.75f - (to.x * 1.5f), 0, 6.75f - (to.y * 1.5f));
+                    TurnManager.instance.ChangeTurn();
+                    Debug.Log($"Piece moved from {from} to {to}");
+                    break;
+                }
             case "ERROR":
                 {
                     Debug.LogError("Server Error: " + packet[1]);
@@ -132,6 +164,10 @@ public class ChessClient : MonoBehaviour
             case "LOG":
                 {
                     Debug.Log("Server Log: " + packet[1]);
+                    if (packet[1] == "YOU_ENTERED")
+                    {
+                        SceneManager.LoadScene("Match");
+                    }
                     break;
                 }
             default:
@@ -140,6 +176,17 @@ public class ChessClient : MonoBehaviour
                     break;
                 }
         }
+    }
+    public Vector2Int StringToVector2Int(string s)
+    {
+        string trimmedString = s.Substring(1, s.Length - 2);
+
+        string[] array = trimmedString.Split(", ");
+
+        int x = int.Parse(array[0]);
+        int y = int.Parse(array[1]);
+
+        return new Vector2Int(x, y);
     }
     public int FindRoomIndex(string roomId)
     {
@@ -152,7 +199,6 @@ public class ChessClient : MonoBehaviour
     }
     public async void CreateRoom(string roomName)
     {
-        Debug.Log("Creating Room: " + roomName);
         Send($"CREATE_ROOM|{roomName}");
     }
     public async void EnterRoom(string roomName, string playerName)
@@ -163,5 +209,9 @@ public class ChessClient : MonoBehaviour
     {
         Debug.Log("Create Room Button Clicked");
         CreateRoom(roomNameInput.text);
+    }
+    public void MoveSend(Vector2Int from, Vector2Int to)
+    {
+         Send($"PIECE_MOVE|{playerNameInput.text}|{from}|{to}");
     }
 }

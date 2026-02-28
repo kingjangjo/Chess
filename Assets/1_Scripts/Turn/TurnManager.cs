@@ -35,6 +35,7 @@ public class TurnManager : MonoBehaviour
     }
     internal void ChangeTurn()
     {
+        Debug.Log("Turn Changed");
         if (TurnManager.instance.currentState.ToString() == "WhiteTurnState")
             TurnManager.instance.ChangeState(new BlackTurnState());
         else
