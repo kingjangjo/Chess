@@ -1,12 +1,12 @@
 using System;
-using UnityEngine;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using System.Text;
-using UnityEngine.UI;
-using TMPro;
 using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class roomInfo
 {
@@ -26,7 +26,16 @@ public class ChessClient : MonoBehaviour
     public GameObject roomPrefab;
     public GameObject roomListObj;
     public List<roomInfo> roomList = new List<roomInfo>();
+    public string roomId;
     StringBuilder sb = new StringBuilder();
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     private void Awake()
     {
         if (Instance == null)
@@ -45,7 +54,11 @@ public class ChessClient : MonoBehaviour
         stream = client.GetStream();
         Debug.Log("Server Connected!!");
 
-        _ = Receive();
+        _ = Receive(); 
+
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnApplicationQuit()
     {
@@ -53,18 +66,62 @@ public class ChessClient : MonoBehaviour
     }
     private void Update()
     {
-        if (client.Connected)
+        if (SceneManager.GetActiveScene().name == "Loby")
         {
-            onOfflineIcon.color = Color.green;
-            onOfflineText.text = "Online";
-        }
-        else
-        {
-            onOfflineIcon.color= Color.red;
-            onOfflineText.text = "Offline";
+            onOfflineIcon = GameObject.FindWithTag("OnOfflineIcon").GetComponent<Image>();
+            onOfflineText = GameObject.FindWithTag("OnOfflineText").GetComponent<TextMeshProUGUI>();
+            if (client.Connected)
+            {
+                onOfflineIcon.color = Color.green;
+                onOfflineText.text = "Online";
+            }
+            else
+            {
+                onOfflineIcon.color = Color.red;
+                onOfflineText.text = "Offline";
+            }
+
         }
     }
-
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Loby")
+        {
+            GameObject canvasObj = GameObject.FindWithTag("Canvas");
+            if (canvasObj != null)
+            {
+                Button[] burttons = canvasObj.GetComponentsInChildren<Button>(true);
+                foreach (Button b in burttons)
+                {
+                    if(b.name == "CreateButton")
+                    {
+                        b.onClick.RemoveAllListeners();
+                        b.onClick.AddListener(PushCreateRoomButton);
+                    }
+                }
+                GridLayoutGroup[] gridLayoutGroups = canvasObj.GetComponentsInChildren<GridLayoutGroup>(true);
+                foreach(GridLayoutGroup g in gridLayoutGroups)
+                {
+                    if(g.name == "RoomList")
+                    {
+                        roomListObj = g.gameObject;
+                    }
+                }
+                TMP_InputField[] inputFields = canvasObj.GetComponentsInChildren<TMP_InputField>(true);
+                foreach(var input in inputFields)
+                {
+                    if (input.name == "RoomNameInputField")
+                    {
+                        roomNameInput = input;
+                    }
+                    else if (input.name == "PlayerNameInputField")
+                    {
+                        playerNameInput = input;
+                    }
+                }
+            }
+        }
+    }
     public async void Send(string msg)
     {
         if (stream == null) Debug.LogError("Stream is null");
@@ -114,7 +171,6 @@ public class ChessClient : MonoBehaviour
                     });
                     var roomObj = Instantiate(roomPrefab, roomListObj.transform);
                     roomObj.GetComponent<RoomUi>().roomIndex = FindRoomIndex(packet[1]);
-                    EnterRoom(packet[2], playerNameInput.text);
                     break;
                 }
             case "PLAYER_ENTERED":
@@ -133,6 +189,7 @@ public class ChessClient : MonoBehaviour
                 {
                     Vector2Int from = StringToVector2Int(packet[1]);
                     Vector2Int to = StringToVector2Int(packet[2]);
+                    Piece piece = BoardManager.Instance.pieceBoard[from.x, from.y];
                     switch (BoardManager.Instance.IsBlocked(to.x, to.y))
                     {
                         case Condition.Piece:
@@ -149,7 +206,6 @@ public class ChessClient : MonoBehaviour
                         default:
                             break;
                     }
-                    Piece piece = BoardManager.Instance.pieceBoard[from.x, from.y];
                     BoardManager.Instance.OponentMovePos(from, to);
                     piece.transform.position = new Vector3(6.75f - (to.x * 1.5f), 0, 6.75f - (to.y * 1.5f));
                     TurnManager.instance.ChangeTurn();
@@ -167,6 +223,41 @@ public class ChessClient : MonoBehaviour
                     if (packet[1] == "YOU_ENTERED")
                     {
                         SceneManager.LoadScene("Match");
+                        roomId = packet[2];
+                        //foreach (var room in roomList)
+                        //{
+                        //    if (room.roomId == packet[2])
+                        //    {
+                        //        UIManager.instance.WhiteName.text = packet[3];
+                        //        UIManager.instance.BlackName.text = packet[4];
+                        //    }
+                        //}
+                    }
+                    else if (packet[1] == "MATCHED")
+                    {
+                        StartCoroutine(TurnManager.instance.Matched(packet[2], packet[3]));
+                    }
+                    //매칭 됐다는 로그를 받으면 UIManager에서 닉네임 두개 띄우고 UI하나 띄우고 타이머 시작하기 이때 띄울 UI 만들기
+                    else if (packet[1] == "ROOM_CREATED")
+                    {
+                        EnterRoom(packet[2], playerNameInput.text);
+                    }
+                    break;
+                }
+            case "TIME":
+                {
+                    TurnManager.instance.TimeChange(packet[1], Convert.ToInt32(packet[2]));
+                    break;
+                }
+            case "END":
+                {
+                    if (packet[1] == "WHITE")
+                    {
+                        TurnManager.instance.GameEnd("White Wins!");
+                    }
+                    else
+                    {
+                        TurnManager.instance.GameEnd("Black Wins!");
                     }
                     break;
                 }
@@ -213,5 +304,13 @@ public class ChessClient : MonoBehaviour
     public void MoveSend(Vector2Int from, Vector2Int to)
     {
          Send($"PIECE_MOVE|{playerNameInput.text}|{from}|{to}");
+    }
+    public void TurnChange(string turn)
+    {
+        Send($"TURN_CHANGE|{roomId}|{turn}");
+    }
+    public void End(string roomId)
+    {
+        Send($"END|{roomId}");
     }
 }

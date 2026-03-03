@@ -64,10 +64,21 @@ public class Piece : MonoBehaviour,IPiece//대충 피스 베이스
             curRank = value;
             Debug.Log($"{(File)beforeFile}{beforeRank} to {(File)curFile}{curRank}");
             //BoardManager.Instance.MovePos(beforeFile, beforeRank, X, Y);
-            BoardManager.Instance.MovePos(this, new Vector2Int(X,Y));
+            BoardManager.Instance.MovePos(this, new Vector2Int(X, Y));
             isFirst = false;
             ChessClient.Instance.MoveSend(new Vector2Int(beforeFile, beforeRank), new Vector2Int(curFile, curRank));
         }
+    }
+    public void SetCurFile(int file)
+    {
+        beforeFile = curFile;
+        curFile = file;
+    }
+    public void SetCurRank(int rank)
+    {
+        beforeRank = curRank;
+        curRank = rank;
+        isFirst = false;
     }
     internal bool IsNotMoved()
     {

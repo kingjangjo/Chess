@@ -25,7 +25,6 @@ public class BoardManager : MonoBehaviour
             if (!Instance)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -105,6 +104,8 @@ public class BoardManager : MonoBehaviour
         pieceBoard[from.x, from.y] = null;
         conditionBoard[to.x, to.y] = Condition.Piece;
         conditionBoard[from.x, from.y] = Condition.Empty;
+        piece.GetComponent<Piece>().SetCurFile(to.x);
+        piece.GetComponent<Piece>().SetCurRank(to.y);
         piece.pos = to;
     }
     public void MovePos(Piece piece, Vector2Int to)

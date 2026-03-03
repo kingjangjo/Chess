@@ -13,6 +13,7 @@ public class WhiteTurnState : IState
     }
     public void Exit()
     {
+        Debug.LogWarning("WhiteTurnExit!");
         string whiteTurnResult = BoardManager.Instance.IsCheckmate(false);
         if (whiteTurnResult == "Checkmate")
             TurnManager.instance.GameEnd("White Win!");

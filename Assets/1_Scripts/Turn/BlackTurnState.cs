@@ -12,6 +12,7 @@ public class BlackTurnState : IState
     }
     public void Exit()
     {
+        Debug.LogWarning("BlackTurnExit!");
         string whiteTurnResult = BoardManager.Instance.IsCheckmate(true);
         if (whiteTurnResult == "Checkmate")
             TurnManager.instance.GameEnd("Black Win!");

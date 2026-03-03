@@ -70,7 +70,6 @@ public class PoolManager : MonoBehaviour
         if (!instance)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
             InitializeObject(3);
         }
         else
