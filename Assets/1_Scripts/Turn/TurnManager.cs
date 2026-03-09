@@ -49,7 +49,7 @@ public class TurnManager : MonoBehaviour
     }
     IEnumerator End()
     {
-        ChessClient.Instance.End(ChessClient.Instance.roomId);
+        //ChessClient.Instance.End(ChessClient.Instance.roomId);
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene("Loby");
     }

@@ -89,7 +89,7 @@ public class Piece : MonoBehaviour,IPiece//대충 피스 베이스
     }
     void OnMouseDown()
     {
-        if (!on && !TurnManager.instance.isSelectPiece)
+        if (!on && !TurnManager.instance.isSelectPiece && ChessClient.Instance.turn == TurnManager.instance.currentState.ToString() && TurnManager.instance.isMatched)
         {
             if (TurnManager.instance.currentState.ToString() == "WhiteTurnState" && !white)
                 return;

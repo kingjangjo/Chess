@@ -15,10 +15,10 @@ public class WhiteTurnState : IState
     {
         Debug.LogWarning("WhiteTurnExit!");
         string whiteTurnResult = BoardManager.Instance.IsCheckmate(false);
-        if (whiteTurnResult == "Checkmate")
-            TurnManager.instance.GameEnd("White Win!");
-        else if (whiteTurnResult == "Stalemate")
-            TurnManager.instance.GameEnd("Draw!");
+        if (whiteTurnResult == "Checkmate" && !ChessClient.Instance.gameEnded)
+            ChessClient.Instance.End(ChessClient.Instance.roomId, "WHITE");
+        else if (whiteTurnResult == "Stalemate" && !ChessClient.Instance.gameEnded)
+            ChessClient.Instance.End(ChessClient.Instance.roomId, "DRAW");
         else if (whiteTurnResult == "NotCheckmate")
             Debug.Log("WhiteTurnEnd!");
     }

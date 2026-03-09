@@ -4,6 +4,23 @@ public class CameraControl : MonoBehaviour
 {
     float speed = 5f;
     float rotateSpeed = 7f;
+    private void Start()
+    {
+        if (ChessClient.Instance.turn == "BlackTurnState")
+        {
+            this.gameObject.transform.position = new Vector3(0, 10, -8);
+            this.gameObject.transform.rotation = Quaternion.Euler(50, 0, 0);
+        }
+        else if (ChessClient.Instance.turn == "WhiteTurnState")
+        {
+            this.gameObject.transform.position = new Vector3(0, 10, 8);
+            this.gameObject.transform.rotation = Quaternion.Euler(50, 180, 0);
+        }
+
+        else
+            Debug.LogError("ERROR");
+
+    }
     public void LateUpdate()
     {
         CameraMove();

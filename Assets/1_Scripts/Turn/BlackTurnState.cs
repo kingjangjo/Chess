@@ -14,10 +14,12 @@ public class BlackTurnState : IState
     {
         Debug.LogWarning("BlackTurnExit!");
         string whiteTurnResult = BoardManager.Instance.IsCheckmate(true);
-        if (whiteTurnResult == "Checkmate")
-            TurnManager.instance.GameEnd("Black Win!");
-        else if (whiteTurnResult == "Stalemate")
-            TurnManager.instance.GameEnd("Draw!");
+        if (whiteTurnResult == "Checkmate" && !ChessClient.Instance.gameEnded)
+            ChessClient.Instance.End(ChessClient.Instance.roomId,"BLACK");
+        //TurnManager.instance.GameEnd("Black Win!");
+        else if (whiteTurnResult == "Stalemate" && !ChessClient.Instance.gameEnded)
+            ChessClient.Instance.End(ChessClient.Instance.roomId, "DRAW");
+        //TurnManager.instance.GameEnd("Draw!");
         else if (whiteTurnResult == "NotCheckmate")
             Debug.Log("BlackTurnEnd!");
     }
