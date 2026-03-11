@@ -6,20 +6,24 @@ public class CameraControl : MonoBehaviour
     float rotateSpeed = 7f;
     private void Start()
     {
-        if (ChessClient.Instance.turn == "BlackTurnState")
+        while (true)
         {
-            this.gameObject.transform.position = new Vector3(0, 10, -8);
-            this.gameObject.transform.rotation = Quaternion.Euler(50, 0, 0);
-        }
-        else if (ChessClient.Instance.turn == "WhiteTurnState")
-        {
-            this.gameObject.transform.position = new Vector3(0, 10, 8);
-            this.gameObject.transform.rotation = Quaternion.Euler(50, 180, 0);
-        }
+            if (ChessClient.Instance.turn == "BlackTurnState")
+            {
+                this.gameObject.transform.position = new Vector3(0, 10, -8);
+                this.gameObject.transform.rotation = Quaternion.Euler(50, 0, 0);
+                break;
+            }
+            else if (ChessClient.Instance.turn == "WhiteTurnState")
+            {
+                this.gameObject.transform.position = new Vector3(0, 10, 8);
+                this.gameObject.transform.rotation = Quaternion.Euler(50, 180, 0);
+                break;
+            }
 
-        else
-            Debug.LogError("ERROR");
-
+            else
+                Debug.LogError("BeforeReceiveColor");
+        }
     }
     public void LateUpdate()
     {

@@ -57,7 +57,7 @@ public class ChessClient : MonoBehaviour
         try
         {
             client = new TcpClient();
-            await client.ConnectAsync("127.0.0.1", 55555);
+            await client.ConnectAsync("172.28.5.81", 55555);
             stream = client.GetStream();
             Debug.Log("Server Connected!!");
 
@@ -239,7 +239,7 @@ public class ChessClient : MonoBehaviour
         catch { }
 
         client = new TcpClient();
-        await client.ConnectAsync("127.0.0.1", 55555);
+        await client.ConnectAsync("172.28.5.81", 55555);
         stream = client.GetStream();
 
         _ = Receive();
